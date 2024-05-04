@@ -6,6 +6,8 @@ from .forms import PasswordGeneratorForm
 import string
 import random
 
+from .tasks import send_password_email
+
 
 class PasswordGeneratorView(FormView):
     template_name = 'generator/password_generator.html'
@@ -54,12 +56,7 @@ class SendPasswordEmailView(FormView):
 
         if email:
             try:
-                send_mail(
-                    f'Ваш сгенерированный пароль: {password}',
-                    'example@ya.com',
-                    [email],
-                    fail_silently=False,
-                )
+                send_password_email(password, email)
 
                 messages.success(self.request, 'Пароль отпрвлен на вашу почту')
                 del self.request.session['generated_password']
