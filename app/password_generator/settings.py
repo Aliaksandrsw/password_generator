@@ -1,12 +1,15 @@
 from pathlib import Path
+
+from dotenv import load_dotenv
 import os
 
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-^z=&t+tvfq5#9pfr$y%h6hsvrroa*^mrt2_t7m2=y&3(0vqa6k'
-DEBUG = True
+SECRET_KEY = str(os.getenv('SECRET_KEY'))
+DEBUG = str(os.getenv('DEBUG'))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = str(os.getenv('DJANGO_ALLOWED_HOSTS')).split(" ")
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -33,8 +36,7 @@ ROOT_URLCONF = 'password_generator.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,14 +83,16 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
 CELERY_IMPORTS = (
     'generator_site.tasks',
 )
+INTERNAL_IPS = str(os.getenv('INTERNAL_IPS')).split(" ")
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

@@ -1,11 +1,9 @@
 from django.contrib import messages
-from django.core.mail import send_mail
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
 from .forms import PasswordGeneratorForm
 import string
 import random
-
 from .tasks import send_password_email
 
 
