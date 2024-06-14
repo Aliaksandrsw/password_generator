@@ -52,6 +52,7 @@ class SendPasswordEmailView(FormView):
 
     def form_valid(self, form):
         password = self.request.POST.get('password')
+
         email = form.cleaned_data.get('email')
 
         if email:
