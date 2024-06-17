@@ -46,6 +46,7 @@ class SendPasswordEmailView(FormView):
         password = self.request.session.get('generated_password')
         if password:
             context['password'] = password
+        context['form'] = self.get_form()
         return context
 
     def form_valid(self, form):
